@@ -35,11 +35,24 @@ export default function Login() {
         });
       }
 
-      // Save logged-in user (minimal)
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      // Standardize user data for storage
+      const userData = form.role === "company" ? res.data.company : res.data.user;
+
+      // Save logged-in user
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("userId", res.data._id);
+      localStorage.setItem("role", form.role);
 
       // Redirect by role
-      navigate(form.role === "company" ? "/provider" : "/jobs");
+      if (form.role === "company") {
+        navigate("/provider");
+      } else {
+        if (userData.isProfileComplete) {
+          navigate("/jobs");
+        } else {
+          navigate("/create");
+        }
+      }
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     } finally {
@@ -60,22 +73,20 @@ export default function Login() {
           <button
             type="button"
             onClick={() => setForm({ ...form, role: "user" })}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 ${
-              form.role === "user"
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-500 hover:text-slate-300"
-            }`}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 ${form.role === "user"
+              ? "bg-indigo-600 text-white shadow-lg"
+              : "text-slate-500 hover:text-slate-300"
+              }`}
           >
             Candidate
           </button>
           <button
             type="button"
             onClick={() => setForm({ ...form, role: "company" })}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 ${
-              form.role === "company"
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-500 hover:text-slate-300"
-            }`}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 ${form.role === "company"
+              ? "bg-indigo-600 text-white shadow-lg"
+              : "text-slate-500 hover:text-slate-300"
+              }`}
           >
             Company
           </button>

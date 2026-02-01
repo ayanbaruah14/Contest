@@ -39,9 +39,12 @@ export default function Signup() {
         });
       }
 
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      const userData = form.role === "company" ? res.data.company : res.data.user;
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("userId", res.data._id);
+      localStorage.setItem("role", form.role);
 
-      navigate(form.role === "company" ? "/provider" : "/jobs");
+      navigate(form.role === "company" ? "/provider" : "/create");
     } catch (err) {
       alert(err.response?.data?.message || "Signup failed");
     } finally {
@@ -62,22 +65,20 @@ export default function Signup() {
           <button
             type="button"
             onClick={() => setForm({ ...form, role: "user" })}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl ${
-              form.role === "user"
-                ? "bg-indigo-600 text-white"
-                : "text-slate-500"
-            }`}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl ${form.role === "user"
+              ? "bg-indigo-600 text-white"
+              : "text-slate-500"
+              }`}
           >
             Candidate
           </button>
           <button
             type="button"
             onClick={() => setForm({ ...form, role: "company" })}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl ${
-              form.role === "company"
-                ? "bg-indigo-600 text-white"
-                : "text-slate-500"
-            }`}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl ${form.role === "company"
+              ? "bg-indigo-600 text-white"
+              : "text-slate-500"
+              }`}
           >
             Company
           </button>
