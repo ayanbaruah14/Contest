@@ -8,7 +8,8 @@ export default function CreateUser() {
     const [loading, setLoading] = useState(false);
 
     const [form, setForm] = useState({
-        name: "", age: "", experience: "",
+        name: "", email: "", password: "",
+        age: "", experience: "",
         skills: "", totalProjects: "", projectLinks: "",
         preferredRoles: "", preferredLocations: "",
         expectedSalary: "", preferredJobTypes: ""
@@ -78,6 +79,14 @@ export default function CreateUser() {
                             <div>
                                 <label className={labelStyle}>Full Name</label>
                                 <input name="name" placeholder="John Doe" className={inputStyle} onChange={handleChange} required />
+                            </div>
+                            <div>
+                                <label className={labelStyle}>Email</label>
+                                <input name="email" type="email" placeholder="john@example.com" className={inputStyle} onChange={handleChange} required />
+                            </div>
+                            <div>
+                                <label className={labelStyle}>Password</label>
+                                <input name="password" type="password" placeholder="••••••••" className={inputStyle} onChange={handleChange} required />
                             </div>
                             <div>
                                 <label className={labelStyle}>Age</label>
