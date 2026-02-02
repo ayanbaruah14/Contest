@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginApiUser, LoginApiCompany } from "../api/auth";
 
 export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const role = localStorage.getItem("role");
+
+    if (user) {
+      if (role === "company") {
+        navigate("/provider");
+      } else {
+        navigate("/jobs");
+      }
+    }
+  }, [navigate]);
 
   const [form, setForm] = useState({
     role: "user",
@@ -35,15 +48,15 @@ export default function Login() {
         });
       }
 
-      // Standardize user data for storage
+
       const userData = form.role === "company" ? res.data.company : res.data.user;
 
-      // Save logged-in user
+
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("userId", res.data._id);
       localStorage.setItem("role", form.role);
 
-      // Redirect by role
+
       if (form.role === "company") {
         navigate("/provider");
       } else {
@@ -68,7 +81,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        {/* Role Switcher */}
+        { }
         <div className="flex bg-slate-900 p-1.5 rounded-2xl mb-8 border border-slate-800 shadow-xl">
           <button
             type="button"
@@ -92,7 +105,7 @@ export default function Login() {
           </button>
         </div>
 
-        {/* Login Card */}
+        { }
         <div className="bg-slate-900 border border-slate-800 p-10 rounded-3xl shadow-2xl relative">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-extrabold text-white tracking-tight">
